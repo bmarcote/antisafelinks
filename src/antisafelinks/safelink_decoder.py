@@ -3,7 +3,7 @@ import sys
 import argparse
 import mailbox
 import email
-import urllib.parse
+import urllib
 from pathlib import Path
 from functools import partial
 from concurrent.futures import ProcessPoolExecutor
@@ -179,7 +179,9 @@ def recover_maildir(maildir: str, check='all', debug=False):
 
 
 
-if __name__ == '__main__':
+
+
+def main():
     description = """Recovers the original url links that have been modified by
     the shit Microsoft SafeLink tool.
     """
@@ -239,3 +241,7 @@ if __name__ == '__main__':
             recover_email_from_file(args.email, args.output, debug=args.debug)
         else:
             print(f"The email {args.email} cannot be found.")
+
+
+if __name__ == '__main__':
+    main()
