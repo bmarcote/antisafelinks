@@ -18,8 +18,11 @@ def recover_link(url: str, debug=False):
         print(f"Recover_link from {url}")
 
     if 'safelinks.protection.outlook' in url:
-        url = url[url.find("?url="):url.find("&amp;data=05")].lstrip("?url=")
-        url = url[:url.find("&data=05")]
+        if url.find("&amp;data=05") != -1:
+            url = url[url.find("?url="):url.find("&amp;data=05")].lstrip("?url=")
+        else:
+            url = url[url.find("?url="):url.find("&data=05")].lstrip("?url=")
+
         if debug:
             print(f"and now:\n{urllib.parse.unquote(url).strip()}")
 
@@ -59,7 +62,7 @@ def recover_links_in_text(text: str, debug=False):
             seed_end = seed_end2
 
         pos_end = pos0 + mod_text[pos0:].find(seed_end) + len(seed_end)
-        url_recovered = recover_link(mod_text[pos0:pos_end])
+        url_recovered = recover_link(mod_text[pos0:pos_end], debug=debug)
         if debug:
             print(f"Recovered url in {url_recovered}\n from {mod_text[pos0:pos_end]}.")
 
@@ -68,10 +71,8 @@ def recover_links_in_text(text: str, debug=False):
             print("Broken link in the email")
             break
 
-        mod_text = mod_text[:pos0] + url_recovered + mod_text[pos_end+1:]
+        mod_text = mod_text[:pos0] + url_recovered + mod_text[pos_end:]
 
-    # if debug:
-    #     print(f"Recovered text {mod_text}.\n\n")
     return mod_text
 
 
