@@ -178,10 +178,9 @@ def recover_maildir(maildir: str, check='all', debug=False):
         del box
 
 
-
-
-
-def main():
+def cli(**kwargs):
+    """Runs the main AntiSafeLinks program as CLI.
+    """
     description = """Recovers the original url links that have been modified by
     the shit Microsoft SafeLink tool.
     """
@@ -244,4 +243,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    cli()
