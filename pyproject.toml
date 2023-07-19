@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "antisafelinks"
-version = "1.0.1"
+version = "1.0.2"
 authors = [{name="Benito Marcote", email="benito.marcote@icloud.com"}]
 description = "Removes the Microsoft SafeLinks from emails or Maildir folders"
 readme = "README.md"
@@ -16,6 +16,7 @@ classifiers = [
     "Environment :: Console",
     "Development Status :: 4 - Beta",
 ]
+scripts = {antisafelinks = "antisafelinks:main"}
 
 
 [project.urls]

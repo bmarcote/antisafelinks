@@ -108,6 +108,9 @@ def recover_email(message: mailbox.MaildirMessage, debug=False):
     return message
 
 
+def this_is_a_test():
+    print("TEST")
+
 def recover_email_from_file(email_file: str, outfile: str = None, debug=False):
     """Given a file that should contain an RFC 2822-compliant message, it will modify back
     all links, if existing, in the body.
@@ -178,7 +181,7 @@ def recover_maildir(maildir: str, check='all', debug=False):
         del box
 
 
-def cli(**kwargs):
+def main():
     """Runs the main AntiSafeLinks program as CLI.
     """
     description = """Recovers the original url links that have been modified by
@@ -243,4 +246,4 @@ def cli(**kwargs):
 
 
 if __name__ == '__main__':
-    cli()
+    main()
