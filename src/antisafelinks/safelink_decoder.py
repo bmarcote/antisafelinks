@@ -108,9 +108,6 @@ def recover_email(message: mailbox.MaildirMessage, debug=False):
     return message
 
 
-def this_is_a_test():
-    print("TEST")
-
 def recover_email_from_file(email_file: str, outfile: str = None, debug=False):
     """Given a file that should contain an RFC 2822-compliant message, it will modify back
     all links, if existing, in the body.
@@ -187,9 +184,9 @@ def main():
     description = """Recovers the original url links that have been modified by
     the shit Microsoft SafeLink tool.
     """
-    usage = "$(prog)s  [-h]  [-u/--url SafeLink-modified URL] " \
-            " [-e/--email email_file]  [-m/--maildir Maildir folder]"
-    parser = argparse.ArgumentParser(description=description, prog='safelink_decoder.py',
+    usage = "antisafelinks  [-h]  [-u/--url SafeLink-modified URL] " \
+            " [-e/--email email_file]  [-d/--dir folder]  [-m/--maildir Maildir folder]"
+    parser = argparse.ArgumentParser(description=description, prog='antisafelinks',
                                      usage=usage)
     parser.add_argument('-u', '--url', default=None, type=str,
                         help="URL fucked up by Microsoft that needs to be recovered. " \
@@ -211,15 +208,7 @@ def main():
     args = parser.parse_args()
 
     if (args.url, args.email, args.maildir, args.dir).count(None) != 3:
-        print("One and only one of the following options need to be set:")
-        print(" -e/--email - pointing to an existing file that may or may not contain " \
-              "M$croso$t fucked-up links.")
-        print(" -m/--maildir- pointing to an existing Maildir folder whose emails need to " \
-              "be corrected from M$croso$t fucked up links.")
-        print(" -d/--dir- pointing to an existing folder incluidng Maildir subfolders whose " \
-              "emails need to be corrected from M$croso$t fucked up links.")
-        print(" -u/--url - passing a url that has been fucked up by M$croso$t SafeLink tool.")
-        print("Run me with -h for more help.")
+        print(f"usage: {usage}")
         sys.exit(0)
 
     if args.url is not None:
