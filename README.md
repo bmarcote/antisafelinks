@@ -24,6 +24,10 @@ This tool has been created with the purpose of recovering all these emails when 
 - **Preserves Privacy**: No need to worry about your sensitive data being unnecessarily routed through Microsoft's servers. AntiSafeLinks ensures your privacy remains intact and only runs locally. Additionally, AntiSafeLinks does not require any external (Python) dependency to run.
 
 
+### Current Issues
+
+- The current version fails to parse properly emails that **contain mailing list digests** containing mails within the mail. I am still working on how to parse these emails properly. **Currently AntiSafeLinks breaks these emails**.
+
 
 ## How To Use
 
