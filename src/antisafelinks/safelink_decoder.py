@@ -2,14 +2,16 @@
 import sys
 import argparse
 import mailbox
-import email
-import urllib
+import email.generator
+import email.message
+import urllib.parse
 from pathlib import Path
+from typing import Optional, Union
 from functools import partial
 from concurrent.futures import ProcessPoolExecutor
 
 
-def recover_link(url: str, debug=False):
+def recover_link(url: str, debug=False) -> str:
     """Recovers the original url included in "url", when  is a M$cro$oft SafeLink url
     that perverted (and most of the times corrupted) the original link.
     If the introduced url is not a M$cro$oft SafeLink, it will return the same (unmodified) string.
@@ -34,7 +36,7 @@ def recover_link(url: str, debug=False):
     return url
 
 
-def recover_links_in_text(text: str, debug=False):
+def recover_links_in_text(text: str, debug=False) -> str:
     """Recovers all links that are present in the given text.
     It returns the recovered text.
     """
@@ -60,6 +62,8 @@ def recover_links_in_text(text: str, debug=False):
             seed_end = seed_end1
         elif pos2 != -1:
             seed_end = seed_end2
+        else:
+            break
 
         pos_end = pos0 + mod_text[pos0:].find(seed_end) + len(seed_end)
         url_recovered = recover_link(mod_text[pos0:pos_end], debug=debug)
@@ -76,14 +80,15 @@ def recover_links_in_text(text: str, debug=False):
     return mod_text
 
 
-def has_safelinks(text: str, debug=False):
+def has_safelinks(text: str) -> bool:
     """Given a text, it checks if it contains url fucked up by M$cro$oft SafeLinks.
     Retuns a boolean with the result.
     """
     return 'https://eur03.safelinks.protection.outlook' in text
 
 
-def recover_email(message: mailbox.MaildirMessage, debug=False):
+def recover_email(message: Union[mailbox.MaildirMessage, email.message.Message], debug=False) \
+                             -> Optional[Union[mailbox.MaildirMessage, email.message.Message]]:
     """Given a file that should contain an RFC 2822-compliant message, it will modify back
     all links, if existing, in the body.
     """
@@ -108,7 +113,7 @@ def recover_email(message: mailbox.MaildirMessage, debug=False):
     return message
 
 
-def recover_email_from_file(email_file: str, outfile: str = None, debug=False):
+def recover_email_from_file(email_file: str, outfile: Optional[str] = None, debug=False):
     """Given a file that should contain an RFC 2822-compliant message, it will modify back
     all links, if existing, in the body.
     """
@@ -132,7 +137,7 @@ def recover_email_from_file(email_file: str, outfile: str = None, debug=False):
     del e, new_e
 
 
-def recover_maildir(maildir: str, check='all', debug=False):
+def recover_maildir(maildir: str, check='all'):
     """Given a Maildir directory, it will go through all found email files and correct
     the links in there.
 
@@ -224,7 +229,7 @@ def main():
             print(f"The directory {args.dir} could not be found.")
     elif args.maildir is not None:
         if Path(args.maildir).exists():
-            recover_maildir(args.maildir, debug=args.debug)
+            recover_maildir(args.maildir)
         else:
             print(f"The maildir directory {args.maildir} could not be found.")
     elif args.email is not None:
