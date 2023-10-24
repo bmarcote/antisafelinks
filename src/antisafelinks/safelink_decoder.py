@@ -117,7 +117,7 @@ def recover_email_from_file(email_file: str, outfile: Optional[str] = None, debu
     """Given a file that should contain an RFC 2822-compliant message, it will modify back
     all links, if existing, in the body.
     """
-    e = email.message_from_file(open(email_file, 'r'))
+    e = email.message_from_file(open(email_file, 'rb'))
 
     if (new_e := recover_email(e, debug=debug)) is None:
         return
