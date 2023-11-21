@@ -117,19 +117,19 @@ def recover_email_from_file(email_file: str, outfile: Optional[str] = None, debu
     """Given a file that should contain an RFC 2822-compliant message, it will modify back
     all links, if existing, in the body.
     """
-    e = email.message_from_file(open(email_file, 'rb'))
+    e = email.message_from_file(open(email_file, 'r', encoding='utf-8'))
 
     if (new_e := recover_email(e, debug=debug)) is None:
         return
 
     if outfile is None:
-        with open(email_file, 'wb') as outemail:
+        with open(email_file, 'w', encoding='utf-8') as outemail:
             print(f"Overwriting {email_file}...")
             gen = email.generator.Generator(outemail, policy=e.policy)
             gen.flatten(new_e)
 
     else:
-        with open(outfile, 'wb') as outemail:
+        with open(outfile, 'w', encoding='utf-8') as outemail:
             print(f"Creating {outfile}...")
             gen = email.generator.Generator(outemail, policy=e.policy)
             gen.flatten(new_e)
