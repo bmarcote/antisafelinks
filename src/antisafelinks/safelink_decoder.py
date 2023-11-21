@@ -123,13 +123,13 @@ def recover_email_from_file(email_file: str, outfile: Optional[str] = None, debu
         return
 
     if outfile is None:
-        with open(email_file, 'w') as outemail:
+        with open(email_file, 'wb') as outemail:
             print(f"Overwriting {email_file}...")
             gen = email.generator.Generator(outemail, policy=e.policy)
             gen.flatten(new_e)
 
     else:
-        with open(outfile, 'w') as outemail:
+        with open(outfile, 'wb') as outemail:
             print(f"Creating {outfile}...")
             gen = email.generator.Generator(outemail, policy=e.policy)
             gen.flatten(new_e)
